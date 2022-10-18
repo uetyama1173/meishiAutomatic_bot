@@ -32,20 +32,32 @@ function doPost(e) {
   //メッセージタイプで判定を行う
   let nextMode = "default"
   if (messageType == "message") {
-    nextMode = "season"
-    sheet_data.appendRow([timestampda, useridname]);
-    sendMessage(nextMode, replyToken)
+    let textMessage = data.events[0].message.text
+    if (data.events[0].message.text == "名刺を作成する") {
+      sendMessage(replyToken)
+    } if (ssRef(0).match(/spring|summer|autumn|winter/)) {
+      sheet_data.appendRow([timestampda, useridname, textMessage])
+      sendTextMessage(replyToken, "ニックネームを教えて下さい")
+    } if (ssRef(1).match(/spring|summer|autumn|winter/)) {
+      sendTextMessage(replyToken, "電話番号を教えて下さい(ハイフン含めて)")
+      sheet_data.appendRow([timestampda, useridname, textMessage])
+    } else {
+      sheet_data.appendRow([timestampda, useridname, textMessage])
+      doGet()
+      sendTextMessage(replyToken, `名刺ができたよ！下のリンクを押してね \n https://script.google.com/macros/s/AKfycbwyNogXvdS4PtkmZMRvWJU1tVwvJYL4gRwZ6i5GsdpzD_jYG2mm_4esqQLkwPUSwCe5/exec`)
+
+    }
   } else if (messageType == "postback") {
     let postbackdata = data.events[0].postback.data;
     sheet_data.appendRow([timestampda, useridname, postbackdata])
     sendTextMessage(replyToken, "趣味は何ですか？")
-  } 
+  }
 
 
 }
 
 //択一式の質問を送信
-function sendMessage(nextMode, replyToken) {
+function sendMessage(replyToken) {
 
 
   let seasonQuestion = [
@@ -56,7 +68,7 @@ function sendMessage(nextMode, replyToken) {
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://uetyama1173.github.io/Line-develop-GAS/img/age2.jpg",
+          "url": "https://uetyama1173.github.io/meishiAutomatic_bot/icooon-mono/seasonQ.jpg",
           "size": "full",
           "aspectRatio": "20:13",
           "aspectMode": "cover",
@@ -146,15 +158,11 @@ function sendMessage(nextMode, replyToken) {
     }
   ]
 
-  let postData = {}
 
-  //PostDataを送信
-  if (nextMode == "season") {
-    postData = {
-      "replyToken": replyToken,
-      "messages": seasonQuestion
-    };
-  }
+  let postData = {
+    "replyToken": replyToken,
+    "messages": seasonQuestion
+  };
 
   // リクエストヘッダ
   var headers = {
@@ -195,6 +203,6 @@ function sendTextMessage(replyToken, replyText) {
   return UrlFetchApp.fetch(REPLY, options);
 }
 
-//メッセージを取得する
+
 
 
