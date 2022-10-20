@@ -1,6 +1,6 @@
 function doGet() {
 
-  season = ssRef(3)
+  season = ssRef(0)
   
   let seasonJudge = () => {
     if (season == "spring") {
@@ -15,9 +15,13 @@ function doGet() {
     return season
   }
 
-  tellNum = ssRef(0)
-  nickName = ssRef(1)
-  myHobby = ssRef(2)
+  name = ssRef(7)
+  email = ssRef(6)
+  tel = ssRef(5)
+  dantai = ssRef(4)
+  phrase = ssRef(3)
+  hobby = ssRef(2)
+  nickname = ssRef(1)
   season = seasonJudge()
 
   return HtmlService.createTemplateFromFile('index').evaluate();

@@ -30,30 +30,42 @@ function doPost(e) {
   sheet_debug.appendRow([data.events[0]]);
 
   //メッセージタイプで判定を行う
+  //ssRefの引数が0なら最終行を取得している
   let nextMode = "default"
   if (messageType == "message") {
     let textMessage = data.events[0].message.text
     if (data.events[0].message.text == "名刺を作成する") {
-      sendMessage(replyToken)
-    } if (ssRef(0).match(/spring|summer|autumn|winter/)) {
-      sheet_data.appendRow([timestampda, useridname, textMessage])
-      sendTextMessage(replyToken, "ニックネームを教えて下さい")
-    } if (ssRef(1).match(/spring|summer|autumn|winter/)) {
+      sheet_data.appendRow([timestampda, useridname, textMessage, "done"])
+      sendTextMessage(replyToken, "本名を教えてください")
+    } if (ssRef(0) == "名刺を作成する") {
+      sheet_data.appendRow([timestampda, useridname, textMessage, "done"])
+      sendTextMessage(replyToken, "メールアドレスを教えてください")
+    } if (ssRef(1) == "名刺を作成する") {
       sendTextMessage(replyToken, "電話番号を教えて下さい(ハイフン含めて)")
-      sheet_data.appendRow([timestampda, useridname, textMessage])
-    } else {
-      sheet_data.appendRow([timestampda, useridname, textMessage])
-      doGet()
-      sendTextMessage(replyToken, `名刺ができたよ！下のリンクを押してね \n https://script.google.com/macros/s/AKfycbwyNogXvdS4PtkmZMRvWJU1tVwvJYL4gRwZ6i5GsdpzD_jYG2mm_4esqQLkwPUSwCe5/exec`)
-
+      sheet_data.appendRow([timestampda, useridname, textMessage, "done"])
+    } if (ssRef(2) == "名刺を作成する") {
+      sendTextMessage(replyToken, "団体名を教えてください")
+      sheet_data.appendRow([timestampda, useridname, textMessage, "done"])
+    } if (ssRef(3) == "名刺を作成する") {
+      sendTextMessage(replyToken, "キャッチフレーズを教えてください")
+      sheet_data.appendRow([timestampda, useridname, textMessage, "done"])
+    } if (ssRef(4) == "名刺を作成する") {
+      sendTextMessage(replyToken, "あなたの趣味は何ですか？")
+      sheet_data.appendRow([timestampda, useridname, textMessage, "done"])
+    } if (ssRef(5) == "名刺を作成する") {
+      sendTextMessage(replyToken, "あなたのニックネームを教えてください")
+      sheet_data.appendRow([timestampda, useridname, textMessage, "done"])
+    } if (ssRef(6) == "名刺を作成する") {
+      //季節の質問を送信
+      sendMessage(replyToken)
+      sheet_data.appendRow([timestampda, useridname, textMessage, "done"])
     }
   } else if (messageType == "postback") {
     let postbackdata = data.events[0].postback.data;
-    sheet_data.appendRow([timestampda, useridname, postbackdata])
-    sendTextMessage(replyToken, "趣味は何ですか？")
+    sheet_data.appendRow([timestampda, useridname, postbackdata, "OK"])
+    doGet()
+    sendTextMessage(replyToken, `名刺ができたよ！下のリンクを押してね \n https://script.google.com/macros/s/AKfycbxw6d2H8ijMQxvKrxJxjkxVZL4heZcZ3Ew0d3MV-JesDR4Ms3hZ5-RfSsMrDcZmtKSY/exec`)
   }
-
-
 }
 
 //択一式の質問を送信
