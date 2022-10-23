@@ -64,7 +64,7 @@ function doPost(e) {
     let postbackdata = data.events[0].postback.data;
     sheet_data.appendRow([timestampda, useridname, postbackdata, "OK"])
     doGet()
-    sendTextMessage(replyToken, `名刺ができたよ！下のリンクを押してね \n https://script.google.com/macros/s/AKfycbxw6d2H8ijMQxvKrxJxjkxVZL4heZcZ3Ew0d3MV-JesDR4Ms3hZ5-RfSsMrDcZmtKSY/exec`)
+    sendTextMessage(replyToken, `名刺ができたよ！下のリンクを押してね \n https://script.google.com/macros/s/AKfycbxuFOXhHrcQFXz2VKstU3JEmke4OttVm2ven_h_AViZAgmXtj0E_wsQrDIfWUk1ncKV/exec`)
   }
 }
 
